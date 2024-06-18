@@ -1,0 +1,102 @@
+openapi: 3.1.0
+info:
+  title: API para o backend do projeto final de react native
+  summary: Backend para o projeto conectando o chat gpt com outra apis de interessas
+  description: |
+    Descrever iso depois
+  termsOfService: https://group4.com/terms/
+  contact:
+    name: API Support
+    url: https://www.group4.com/support
+    email: support@group4.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.1
+
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+
+servers:
+  - url: http://localhost:8080/
+    description: The local development API server
+
+paths:
+  /frases:
+    post:
+      summary: Gera uma frase sobre a personalidade da pessoa incluindo uma referência a um pokemon a partir do mês de nascimento 
+      operationId: gerarFrase
+      tags:
+        - Gera uma frase sobre a personalidade do usuário
+      requestBody:
+        description: |
+          Um GPTRequestBody contendo o systemPromptNum referente à operação de geração de conteúdo
+        required: true
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GPTRequestBody'
+      responses:
+        '201':
+          description: Frase gerada com sucesso
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  type: string
+              example: "Vc é um pikachu"
+        '400':
+            $ref: '#/components/responses/IllegalInput'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+    
+    get:
+      summary: Pega um pokemon da api de pokemons e retorna a imagem
+      description: Retorna o sprite padrão de um pokemon
+      operationId: getPokemon
+      tags:
+        - Pega um pokemon da api de pokemons
+      responses:
+
+
+components:
+  schemas:
+    GPTRequestBody:
+      type: object
+      properties:
+        userMessagePrompt:
+          type: string
+        systemPromptNum:
+          type:  integer
+    GeneralError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  
+  responses:
+    IllegalInput:
+      description: Illegal input for operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+    NotFound:
+      description: Entity not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+    GeneralError:
+      description: General error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'

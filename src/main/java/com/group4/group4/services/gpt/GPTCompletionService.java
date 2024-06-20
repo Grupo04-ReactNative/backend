@@ -1,4 +1,4 @@
-package com.group4.group4.services;
+package com.group4.group4.services.gpt;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.group4.group4.dtos.Completion;
-import com.group4.group4.dtos.GPTRequest;
+import com.group4.group4.dtos.gpt.Completion;
+import com.group4.group4.dtos.gpt.GPTRequest;
 import com.group4.group4.exceptions.InvalidGPTResponseException;
 
 

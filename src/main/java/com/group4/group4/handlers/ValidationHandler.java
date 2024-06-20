@@ -14,6 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.group4.group4.exceptions.InvalidGPTResponseException;
+import com.group4.group4.exceptions.InvalidPokeApiResponseException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -40,6 +41,11 @@ public class ValidationHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(InvalidGPTResponseException.class)
     public ResponseEntity<Object> handleInvalidGPTResponseException(HttpServletRequest request, InvalidGPTResponseException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+	@ExceptionHandler(InvalidPokeApiResponseException.class)
+    public ResponseEntity<Object> handleInvalidPokeApiResponseException(HttpServletRequest request, InvalidPokeApiResponseException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 	

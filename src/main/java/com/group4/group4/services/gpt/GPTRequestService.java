@@ -1,15 +1,12 @@
-package com.group4.group4.services;
-
+package com.group4.group4.services.gpt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.group4.group4.dtos.GPTRequest;
-import com.group4.group4.dtos.GPTRequestBody;
+import com.group4.group4.dtos.gpt.GPTRequest;
+import com.group4.group4.dtos.gpt.GPTRequestBody;
 import com.group4.group4.enums.SystemPrompt;
-
-
 
 @Service
 public class GPTRequestService {
@@ -27,7 +24,7 @@ public class GPTRequestService {
         String systemPromptMessage = systemPromptService.getMessage(systemPrompt);
 
         switch(systemPrompt) {
-            case Frase:
+            case PersonalidadePokemon:
                 return new GPTRequest(model, userMessagePrompt, systemPromptMessage);
         }
         return request;

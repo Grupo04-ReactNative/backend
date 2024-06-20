@@ -23,15 +23,43 @@ servers:
     description: The local development API server
 
 paths:
-  /frases:
+
+  /personalidade-pokemon:
+    get:
+      summary: Gera uma personalidade-pokemon aleatoriamente para o usuario.
+      description: |
+        Retorna um objeto contendo
+        as imagens do pokemon, o nome e uma string sobre a personalidade do usuário 
+        baseada nos flavor text do pokemon de primeira geração selecionado de modo aleatório
+      operationId: getPersonalidadePokemon
+      tags:
+        - Gera uma personalidade pokemon de primeira geração aleatória
+      responses:
+        '200':
+          description: Personalidade Pokemon gerada com sucesso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PokemonDTO'
+        '400':
+          $ref: '#/components/responses/IllegalInput'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
+  /personalidade:
     post:
-      summary: Gera uma frase sobre a personalidade da pessoa incluindo uma referência a um pokemon a partir do mês de nascimento 
+      summary: Gera uma frase sobre a personalidade da pessoa a partir do nome e descrição de um Pokemon
       operationId: gerarFrase
       tags:
-        - Gera uma frase sobre a personalidade do usuário
+        - Gera uma frase sobre a personalidade-pokemon do usuário
       requestBody:
         description: |
-          Um GPTRequestBody contendo o systemPromptNum referente à operação de geração de conteúdo
+          Um GPTRequestBody contendo:
+          o systemPromptNum [ 0 ] para gerar uma frase sobre a personalidade do usuário.
+          a userMessagePrompt contendo o nome de um pokemon e a descrição oriunda de todos os flavor_text
+          da species na pokeapi: conferir: https://pokeapi.co/api/v2/pokemon-species/1/ 
+
         required: true
         content:
             application/json:
@@ -53,18 +81,42 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/GeneralError'
-    
+  /pokemon:
     get:
-      summary: Pega um pokemon da api de pokemons e retorna a imagem
-      description: Retorna o sprite padrão de um pokemon
+      summary: Pega um pokemon e as informações de interesse que a api extrai da PokeAPI
+      description: |
+        Retorna um objeto contendo 
+        as imagens do pokemon, o nome e uma string contendo todos os flavor texts da espécie
       operationId: getPokemon
       tags:
         - Pega um pokemon da api de pokemons
       responses:
-
+        '200':
+          description: Pokemón encontrado com sucesso!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PokemonDTO'
+        '400':
+          $ref: '#/components/responses/IllegalInput'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/GeneralError'
 
 components:
   schemas:
+    PersonalidadePokemonDTO:
+      type: object
+      properties:
+        sprites:
+          type: array
+          item: string
+        name:
+          type: string
+        frasePersonalidade:
+          type: string
+
     GPTRequestBody:
       type: object
       properties:
@@ -72,6 +124,16 @@ components:
           type: string
         systemPromptNum:
           type:  integer
+    PokemonDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+        sprites:
+          type: array
+          item: string
+        speciesFlavorText:
+          type: string
     GeneralError:
       type: object
       properties:

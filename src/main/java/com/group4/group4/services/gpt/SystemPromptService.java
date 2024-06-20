@@ -1,4 +1,4 @@
-package com.group4.group4.services;
+package com.group4.group4.services.gpt;
 
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.group4.group4.dtos;
+package com.group4.group4.dtos.gpt;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
